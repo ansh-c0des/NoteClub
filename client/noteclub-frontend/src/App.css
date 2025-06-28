@@ -1,0 +1,250 @@
+/* Import Google Fonts - Inter */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+* {
+    box-sizing: border-box;
+}
+
+/* Base styles for the entire application */
+body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    /* Smooth transitions for theme changes */
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* App Container - Full screen layout */
+.app-container {
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #f3f4f6; /* bg-gray-100 */
+    color: #1f2937; /* text-gray-900 */
+    padding: 1rem; /* p-4 */
+    position: relative; /* For positioning dark mode toggle */
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Dark mode styles for the app container */
+html.dark .app-container {
+    background-color: #111827; /* dark:bg-gray-900 */
+    color: #f9fafb; /* dark:text-gray-100 */
+}
+
+/* Dark Mode Toggle Button */
+.dark-mode-toggle {
+    position: fixed;
+    top: 1rem; /* top-4 */
+    right: 1rem; /* right-4 */
+    padding: 0.5rem 1rem; /* px-4 py-2 */
+    border-radius: 9999px; /* rounded-full */
+    background-color: #3b82f6; /* bg-blue-500 */
+    color: white; /* text-white */
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* shadow-md */
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease; /* transition-all duration-300 */
+    
+}
+
+.dark-mode-toggle:hover {
+    background-color: #2563eb; /* hover:bg-blue-600 */
+}
+
+.dark-mode-toggle:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.75); /* focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75 */
+}
+
+/* Dark mode styles for the toggle button */
+html.dark .dark-mode-toggle {
+    background-color: #1d4ed8; /* dark:bg-blue-700 */
+    color: white; /* dark:text-white */
+}
+
+html.dark .dark-mode-toggle:hover {
+    background-color: #1e40af; /* dark:hover:bg-blue-800 */
+}
+
+/* Login Form Container */
+.login-form-container {
+    background-color: #ffffff; /* bg-white */
+    padding: 1rem; /* p-8 */
+    margin-bottom: 1rem ;
+    border-radius: 0.75rem; /* rounded-xl */
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); /* shadow-lg */
+    width: 100%;
+    max-width: 28rem; /* max-w-md */
+    border: 1px solid #e5e7eb; /* border border-gray-200 */
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+
+
+/* Dark mode styles for the login form container */
+html.dark .login-form-container {
+    background-color: #1f2937; /* dark:bg-gray-800 */
+    border-color: #374151; /* dark:border-gray-700 */
+}
+
+/* Login Title */
+.login-title {
+    font-size: 1.875rem; /* text-3xl */
+    font-weight: 700; /* font-bold */
+    text-align: center; /* text-center */
+    margin-bottom: 1.5rem; /* mb-6 */
+    color: #1f2937; /* text-gray-800 */
+}
+
+/* Dark mode styles for the login title */
+html.dark .login-title {
+    color: #e5e7eb; /* dark:text-gray-200 */
+}
+
+/* Input Group - for label and input field */
+.input-group {
+    margin-bottom: 1rem; /* mb-4 for username, mb-6 for password group - adjusted for consistency */
+}
+
+/* Input Label */
+.input-label {
+    display: block;
+    font-size: 0.875rem; /* text-sm */
+    font-weight: 500; /* font-medium */
+    color: #374151; /* text-gray-700 */
+    margin-bottom: 0.5rem; /* mb-2 */
+}
+
+/* Dark mode styles for input labels */
+html.dark .input-label {
+    color: #d1d5db; /* dark:text-gray-300 */
+}
+
+/* Text Input Fields */
+.text-input {
+    width: 100%;
+    padding: 0.5rem 1rem; /* px-4 py-2 */
+    border: 1px solid #d1d5db; /* border border-gray-300 */
+    border-radius: 0.5rem; /* rounded-lg */
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); /* shadow-sm */
+    background-color: #f9fafb; /* bg-gray-50 */
+    transition: border-color 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+}
+
+.text-input:focus {
+    outline: none;
+    border-color: #3b82f6; /* focus:border-blue-500 */
+    box-shadow: 0 0 0 1px #3b82f6; /* focus:ring-blue-500 */
+}
+
+/* Dark mode styles for text inputs */
+html.dark .text-input {
+    border-color: #4b5563; /* dark:border-gray-600 */
+    background-color: #374151; /* dark:bg-gray-700 */
+    color: #f9fafb; /* dark:text-gray-100 */
+}
+.Social-option {
+    display: flex;
+    justify-content: center;
+    align-items: center; /* This vertically centers the content */
+    height: 25px;
+    font-size: 1.2rem;
+    font-weight: 100;
+    text-align: center;
+    margin-top: 10px;
+    color: #1f2937;
+}
+
+html.dark .Social-option {
+    color: #e5e7eb;
+}
+
+/* Remove default margin/padding from inner text element */
+.Social-option * {
+    margin: 0;
+    padding: 0;
+}
+
+/* Social Buttons Grid */
+.social-buttons-grid {
+    display: grid;
+    grid-template-columns: 1fr; /* grid-cols-1 */
+    gap: 1rem; /* gap-4 */
+    margin-top: 0.25rem;
+    margin-bottom: 0.5rem; /* mb-6 */
+}
+
+@media (min-width: 768px) { /* md:grid-cols-2 */
+    .social-buttons-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+/* Social Button */
+.social-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem; /* gap-2 */
+    padding: 0.5rem 1rem; /* px-4 py-2 */
+    border: 1px solid #d1d5db; /* border border-gray-300 */
+    border-radius: 0.5rem; /* rounded-lg */
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); /* shadow-sm */
+    color: #374151; /* text-gray-700 */
+    background-color: #ffffff; /* bg-white */
+    cursor: pointer;
+    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
+
+.social-button:hover {
+    background-color: #f9fafb; /* hover:bg-gray-50 */
+}
+
+.social-button:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.75); /* focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75 */
+}
+
+/* Dark mode styles for social buttons */
+html.dark .social-button {
+    border-color: #4b5563; /* dark:border-gray-600 */
+    color: #d1d5db; /* dark:text-gray-300 */
+    background-color: #374151; /* dark:bg-gray-700 */
+}
+
+html.dark .social-button:hover {
+    background-color: #4b5563; /* dark:hover:bg-gray-600 */
+}
+
+/* Register Button */
+.register-button {
+    width: 100%;
+    padding: 0.75rem 1rem; /* px-4 py-3 */
+    background-color: #2563eb; /* bg-blue-600 */
+    color: white; /* text-white */
+    font-weight: 600; /* font-semibold */
+    border-radius: 0.5rem; /* rounded-lg */
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* shadow-md */
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.register-button:hover {
+    background-color: #1d4ed8; /* hover:bg-blue-700 */
+}
+
+.register-button:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px #3b82f6, 0 0 0 4px rgba(59, 130, 246, 0.5); /* focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 */
+}
+
+/* Dark mode styles for register button focus */
+html.dark .register-button:focus {
+    box-shadow: 0 0 0 2px #3b82f6, 0 0 0 4px rgba(59, 130, 246, 0.5), inset 0 0 0 2px #1f2937; /* dark:focus:ring-offset-gray-800 */
+}
