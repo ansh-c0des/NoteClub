@@ -3,7 +3,10 @@ package com.noteclub.server.controller;
 import com.noteclub.server.model.Users;
 import com.noteclub.server.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
@@ -24,8 +27,13 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public String login(@RequestBody Users user){
-        return userService.verify(user);
+    public ResponseEntity<Map<String, String>> login (@RequestBody Users user) {
+        Map<String, String> result = userService.verify(user);
+        if (result.containsKey("token")) {
+            return ResponseEntity.ok(result); // Returns 200 OK with the JSON map
+        } else {
+            return ResponseEntity.status(401).body(result);
+        }
     }
 
 }
