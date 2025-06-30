@@ -1,9 +1,6 @@
 import React, { useState } from 'react';
 import { Eye, EyeOff } from 'lucide-react'; // Import Eye and EyeOff icons
 
-
-
-
 // Register component
 function Register({ onLoginClick }) { // Receive onLoginClick prop
   // States for all registration fields
