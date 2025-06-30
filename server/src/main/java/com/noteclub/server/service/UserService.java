@@ -9,6 +9,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Service
 public class UserService {
 
@@ -28,12 +31,23 @@ public class UserService {
         return userRepo.save(user);
     }
 
-    public String verify(Users user) {
-        Authentication authenticate = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
+    public Map<String, String> verify (Users user) {
+        Map<String, String> response = new HashMap<>();
+        try {
+            Authentication authenticate = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(user.getUsername(),
+                            user.getPassword()));
 
-        if(authenticate.isAuthenticated())
-            return jwtService.generateToken(user.getUsername());
-        return "Fail";
+            if (authenticate.isAuthenticated()) {
+                String token = jwtService.generateToken (user.getUsername());
+                response.put("token", token); // Put the token into the map
+            } else {
+                response.put("message", "Authentication failed: Not authenticated");
+            }
+        } catch (Exception e) {
+            response.put("message", "Invalid username or password");
+            System.err.println("Authentication error for user " + user.getUsername() + ": " + e.getMessage());
+        }
+        return response;
     }
 }
