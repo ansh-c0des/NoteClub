@@ -1,0 +1,41 @@
+.auth-layout {
+    display: flex;
+    height: 100vh;           /* fill viewport */
+    overflow: hidden;
+}
+
+/* Sidebar stays fixed */
+.auth-layout .sidebar {
+    position: fixed;         /* remove it from normal flow */
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 240px;            /* match your sidebar width */
+    overflow-y: auto;
+}
+
+/* Content wrapper: will slide left/right */
+.auth-layout .content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    transition: margin-left 0.3s ease;
+    margin-left: 0;          /* default to no offset */
+}
+
+/* When sidebar is open */
+.auth-layout .content.sidebar-open {
+    margin-left: 240px;      /* same width as sidebar */
+}
+
+/* When sidebar is closed */
+.auth-layout .content.sidebar-closed {
+    margin-left: 0;          /* full-width content */
+}
+
+/* ensure main fills below the NavBar */
+.auth-layout .content main {
+    flex: 1;
+    padding: 1.5rem;
+}

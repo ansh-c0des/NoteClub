@@ -1,0 +1,157 @@
+/* --------------------------------------
+   SIDEBAR VARIABLES (override in :root)
+   -------------------------------------- */
+:root {
+    --sidebar-width:       240px;
+    --sidebar-bg:          #eceff4;
+    --sidebar-text:        #1f2937;
+    --sidebar-active-bg:   #4f46e5;
+    --sidebar-active-text: #ffffff;
+    --sidebar-hover-bg:    rgba(0, 0, 0, 0.05);
+    --divider-color:       #e5e7eb;
+}
+
+/* Dark mode overrides */
+html.dark {
+    --sidebar-bg:        #1f2937;
+    --sidebar-text:      #f9fafb;
+    --sidebar-active-bg: #a78bfa;
+    --sidebar-hover-bg:  rgba(255, 255, 255, 0.1);
+    --divider-color:     #374151;
+}
+
+/* --------------------------------------
+   CONTAINER
+   -------------------------------------- */
+.sidebar-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: var(--sidebar-width);
+    display: flex;
+    flex-direction: column;
+    background-color: var(--sidebar-bg);
+    color: var(--sidebar-text);
+    overflow-y: auto;
+    z-index: 1000;
+    transition: left 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+}
+
+
+/* When closed, push off‑screen */
+.sidebar-container.sidebar-closed {
+    left: -100%;
+}
+/* Close‑button in top corner (only visible on small screens) */
+.sidebar-close {
+    display: none; /* we'll show it only under breakpoint */
+    padding: 0.5rem;
+    text-align: right;
+}
+.sidebar-close button {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+/* --------------------------------------
+   HEADER
+   -------------------------------------- */
+.sidebar-header {
+    padding: 1rem;
+    border-bottom: 1px solid var(--divider-color);
+    text-align: center;
+}
+
+.sidebar-header h1 {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+@media (max-width: 1100px) {
+    .sidebar-close {
+        display: block;
+    }
+}
+/* --------------------------------------
+   NAVIGATION
+   -------------------------------------- */
+.sidebar-nav {
+    flex: 1;
+    padding: 1rem 0;
+}
+
+.sidebar-nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.sidebar-nav li {
+    margin-bottom: 0.5rem;
+}
+
+.nav-link {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem 1rem;
+    color: var(--sidebar-text);
+    text-decoration: none;
+    border-radius: 0.5rem;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.nav-link:hover {
+    background-color: var(--sidebar-hover-bg);
+}
+
+.nav-link.active {
+    background-color: var(--sidebar-active-bg);
+    color: var(--sidebar-active-text);
+}
+
+.nav-icon {
+    width: 1.25rem;
+    height: 1.25rem;
+}
+
+/* --------------------------------------
+   FOOTER (Buttons)
+   -------------------------------------- */
+.sidebar-footer {
+    padding: 1rem;
+    border-top: 1px solid var(--divider-color);
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.sidebar-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    width: 100%;
+    padding: 0.5rem 1rem;
+    background: none;
+    border: none;
+    color: var(--sidebar-text);
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.sidebar-btn:hover {
+    background-color: var(--sidebar-hover-bg);
+}
+
+.sidebar-btn.logout {
+    background-color: #dc2626;
+    color: #ffffff;
+}
+
+.sidebar-btn.logout:hover {
+    background-color: #b91c1c;
+}

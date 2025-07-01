@@ -23,7 +23,7 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background-color: #f3f4f6; /* bg-gray-100 */
+    background-color: var(--main-bg);
     color: #1f2937; /* text-gray-900 */
     padding: 1rem; /* p-4 */
     position: relative; /* For positioning dark mode toggle */
@@ -49,7 +49,7 @@ html.dark .app-container {
     border: none;
     cursor: pointer;
     transition: all 0.3s ease; /* transition-all duration-300 */
-    
+
 }
 
 .dark-mode-toggle:hover {
@@ -248,3 +248,21 @@ html.dark .social-button:hover {
 html.dark .register-button:focus {
     box-shadow: 0 0 0 2px #3b82f6, 0 0 0 4px rgba(59, 130, 246, 0.5), inset 0 0 0 2px #1f2937; /* dark:focus:ring-offset-gray-800 */
 }
+
+
+/* App.css :contentReference[oaicite:0]{index=0} */
+:root {
+    /* ...existing vars... */
+    --off-white-bg:   #eceff4; /* your desired light‑mode background */
+    --sidebar-bg:     var(--off-white-bg);
+    --navbar-bg:      var(--off-white-bg);
+    --main-bg:        var(--off-white-bg);
+}
+
+/* Dark‑mode override (if you ever need a different off‑white in dark): */
+html.dark {
+    --sidebar-bg:     #1f2937; /* already set */
+    --navbar-bg:      #1f2937; /* mirror sidebar */
+    --main-bg:        #111827; /* matches app-container */
+}
+
