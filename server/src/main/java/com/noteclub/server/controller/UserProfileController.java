@@ -1,9 +1,7 @@
 package com.noteclub.server.controller;
 
-import com.noteclub.server.model.ProfileResponse;
+import com.noteclub.server.model.ProfileResponseDTO;
 import com.noteclub.server.model.UserPrincipal;
-import com.noteclub.server.model.UserProfile;
-import com.noteclub.server.model.Users;
 import com.noteclub.server.service.UserProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -19,7 +17,7 @@ public class UserProfileController {
     UserProfileService userProfileService;
 
     @GetMapping("/details")
-    public ProfileResponse getProfileDetails(@AuthenticationPrincipal UserPrincipal principal) {
+    public ProfileResponseDTO getProfileDetails(@AuthenticationPrincipal UserPrincipal principal) {
         return userProfileService.getProfileDetails(principal.getUsername());
     }
 }
