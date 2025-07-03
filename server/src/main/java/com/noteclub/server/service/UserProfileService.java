@@ -18,7 +18,7 @@ public class UserProfileService {
         resp.setPicture_url(profile.getPictureUrl());
         resp.setBio(profile.getBio());
         resp.setUsername(profile.getUsername());
+        resp.setEdu_course(profile.getEdu_course());
         return resp;
     }
-
 }

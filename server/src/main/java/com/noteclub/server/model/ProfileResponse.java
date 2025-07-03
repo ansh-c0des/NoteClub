@@ -7,4 +7,5 @@ public class ProfileResponse {
     private String picture_url;
     private String bio;
     private String username;
+    private String edu_course;
 }

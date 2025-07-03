@@ -34,6 +34,9 @@ public class UserProfile {
     @Column(name = "updated_at")
     private Instant updatedAt;
 
+    @Column(name = "edu_course")
+    private String edu_course;
+
     // Automatically set timestamps
     @PrePersist
     protected void onCreate() {
