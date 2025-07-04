@@ -1,13 +1,18 @@
 import React from 'react';
+import './Settings.css';
 
-function Settings() {
+export default function Settings() {
     return (
-        <div className="p-6 bg-white dark:bg-gray-800 rounded-lg shadow-md">
-            <h2 className="text-3xl font-bold mb-4 text-blue-600 dark:text-blue-400">Settings</h2>
-            <p className="text-lg text-gray-700 dark:text-gray-300">Adjust your account settings and preferences.</p>
-            {/* Add settings options here */}
+        <div className="settings-overlay">
+            <div className="settings-card">
+                <h2 className="settings-title">Settings</h2>
+                <div className="settings-options">
+                    <button className="settings-btn">Edit Profile</button>
+                    <button className="settings-btn">Contact Us</button>
+                    <button className="settings-btn">Report Problem</button>
+                    <button className="settings-btn delete">Delete Account</button>
+                </div>
+            </div>
         </div>
     );
 }
-
-export default Settings;

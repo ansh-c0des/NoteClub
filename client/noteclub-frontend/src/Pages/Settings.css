@@ -1,0 +1,70 @@
+/* Full-page overlay with blur */
+.settings-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(5px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
+/* Card styling matches sidebar/nav bg */
+.settings-card {
+    background-color: var(--sidebar-bg);
+    color: var(--text-color);
+    border-radius: 0.75rem;
+    padding: 2rem;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Title styling same as sidebar/nav text */
+.settings-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 0;
+    color: var(--text-color);
+    text-align: center;
+}
+
+/* Buttons list */
+.settings-options {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+/* General buttons styled consistently */
+.settings-btn {
+    padding: 0.75rem 1rem;
+    background-color: var(--primary-color);
+    color: white;
+    font-weight: 500;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.settings-btn:hover {
+    background-color: var(--sidebar-hover-bg);
+    color: var(--text-color);
+    transform: translateY(-2px);
+}
+
+
+/* Delete button in red */
+.settings-btn.delete {
+    background-color: #dc2626;
+}
+
+.settings-btn.delete:hover {
+    background-color: #b91c1c;
+}
