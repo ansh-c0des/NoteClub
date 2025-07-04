@@ -1,0 +1,217 @@
+/* UploadNotes.css */
+
+.upload-notes-container {
+    display: flex;
+    flex-direction: column;
+    padding: 2rem;
+    width: 100%;
+    max-width: 900px; /* Adjust as needed for overall form width */
+    margin: 0 auto; /* Center the container */
+    background-color: var(--off-white-bg); /* Use global variable */
+    border-radius: 0.75rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+html.dark .upload-notes-container {
+    background-color: var(--sidebar-bg); /* Use global variable for dark background */
+}
+
+.upload-notes-title {
+    font-size: 2.25rem; /* Equivalent to text-4xl */
+    font-weight: 700; /* font-bold */
+    color: var(--text-color); /* Use global variable */
+    margin-bottom: 1.5rem; /* mb-6 */
+}
+
+.upload-notes-description {
+    font-size: 1.125rem; /* Equivalent to text-lg */
+    color: var(--text-secondary); /* Use global variable */
+    margin-bottom: 2rem; /* mb-8 */
+}
+
+.upload-form-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem; /* gap-6 */
+}
+
+@media (min-width: 768px) { /* md:grid-cols-2 */
+    .upload-form-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+.form-column {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group {
+    margin-bottom: 1rem; /* Adjust as needed */
+}
+
+.form-label {
+    display: block;
+    font-size: 1rem; /* text-base */
+    font-weight: 500; /* font-medium */
+    color: var(--text-color); /* Use global variable */
+    margin-bottom: 0.5rem; /* mb-2 */
+}
+
+.form-input,
+.form-textarea {
+    width: 100%;
+    padding: 0.75rem 1rem; /* px-4 py-3 */
+    border: 1px solid var(--text-secondary); /* Use a suitable global color variable */
+    border-radius: 0.5rem; /* rounded-lg */
+    background-color: #f9fafb; /* Light background for inputs */
+    color: var(--text-color); /* Input text color */
+    transition: border-color 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+}
+
+html.dark .form-input,
+html.dark .form-textarea {
+    background-color: #374151; /* dark:bg-gray-700 */
+    border-color: #4b5563; /* dark:border-gray-600 */
+    color: var(--text-color); /* dark:text-gray-100 */
+}
+
+.form-input:focus,
+.form-textarea:focus {
+    outline: none;
+    border-color: var(--primary-color); /* focus:border-blue-500 */
+    box-shadow: 0 0 0 1px var(--primary-color); /* focus:ring-blue-500 */
+}
+
+.form-textarea {
+    min-height: 100px; /* Adjust height as needed */
+    resize: vertical;
+}
+
+.browse-notes-container {
+    margin-top: 2rem;
+    margin-bottom: 1.5rem;
+}
+
+.browse-notes-label {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--text-color);
+    margin-bottom: 0.5rem;
+}
+
+.file-input-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.file-input {
+    flex-grow: 1;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--text-secondary);
+    border-radius: 0.5rem;
+    background-color: #f9fafb;
+    color: var(--text-color);
+    cursor: pointer;
+    transition: border-color 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+}
+
+html.dark .file-input {
+    background-color: #374151;
+    border-color: #4b5563;
+    color: var(--text-color);
+}
+
+.file-input::-webkit-file-upload-button {
+    visibility: hidden;
+}
+
+.file-input::before {
+    content: 'Choose File';
+    display: inline-block;
+    background: var(--primary-color);
+    color: white;
+    border: 1px solid var(--primary-color);
+    border-radius: 0.25rem;
+    padding: 0.5rem 1rem;
+    outline: none;
+    white-space: nowrap;
+    -webkit-user-select: none;
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 0.9rem;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.file-input:hover::before {
+    background-color: #3b82f6; /* A slightly darker blue for hover */
+    border-color: #3b82f6;
+}
+
+html.dark .file-input::before {
+    background-color: var(--primary-color); /* Dark mode primary color */
+    border-color: var(--primary-color);
+}
+
+html.dark .file-input:hover::before {
+    background-color: #8b5cf6; /* A slightly darker purple for hover in dark mode */
+    border-color: #8b5cf6;
+}
+
+
+.post-button {
+    width: 100%;
+    padding: 0.75rem 1.5rem; /* px-6 py-3 */
+    background-color: var(--primary-color); /* bg-blue-600 */
+    color: white; /* text-white */
+    font-weight: 600; /* font-semibold */
+    border-radius: 0.5rem; /* rounded-lg */
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* shadow-md */
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.post-button:hover {
+    background-color: #3b82f6; /* hover:bg-blue-700 - using a slightly different blue here for consistency with primary */
+}
+
+html.dark .post-button {
+    background-color: var(--primary-color);
+}
+
+html.dark .post-button:hover {
+    background-color: #8b5cf6; /* Darker primary color for hover in dark mode */
+}
+
+.post-button:focus {
+
+    outline: none;
+    box-shadow: 0 0 0 2px var(--primary-color), 0 0 0 4px rgba(79, 70, 229, 0.5); /* focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 */
+}
+
+html.dark .post-button:focus {
+    box-shadow: 0 0 0 2px var(--primary-color), 0 0 0 4px rgba(167, 139, 250, 0.5), inset 0 0 0 2px #1f2937; /* dark:focus:ring-offset-gray-800 */
+}
+
+/* Add this to Upload_notes.css if you want to display the selected file name */
+.selected-file-name {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin-left: 0.5rem;
+    white-space: nowrap; /* Prevent wrapping */
+    overflow: hidden; /* Hide overflow */
+    text-overflow: ellipsis; /* Add ellipsis for long names */
+    max-width: 150px; /* Limit width */
+}
+
+html.dark .selected-file-name {
+    color: var(--text-secondary);
+}
+.form-label.required::after {
+    content: ' *';
+    color: #ef4444; /* red-500 */
+    margin-left: 0.25rem;
+}
