@@ -1,0 +1,289 @@
+/* src/Pages/Edit_profile.css */
+
+.edit-profile-container {
+    display: flex;
+    flex-direction: column; /* Main container stacks title and content vertically */
+    align-items: center; /* Center horizontally */
+    padding: 2rem;
+    width: 100%;
+    max-width: 900px; /* Adjusted max-width for overall layout */
+    margin: 0 auto;
+    background-color: var(--off-white-bg);
+    border-radius: 0.75rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+html.dark .edit-profile-container {
+    background-color: var(--sidebar-bg);
+}
+
+.edit-profile-title {
+    font-size: 2.25rem;
+    font-weight: 700;
+    color: var(--text-color);
+    margin-bottom: 2rem; /* Spacing below the title */
+    text-align: center;
+    width: 100%; /* Ensure title takes full available width */
+}
+
+/* New: Wrapper for the two-column content below the title */
+.profile-content-wrapper {
+    display: flex; /* Flexbox for two columns */
+    flex-direction: row; /* Arrange items horizontally */
+    align-items: flex-start; /* Align contents of both columns to the top */
+    gap: 2.5rem; /* Space between the left (pic) and right (form) sections */
+    width: 100%; /* Take full width of its parent (.edit-profile-container) */
+}
+
+/* Responsive adjustment for smaller screens to stack vertically */
+@media (max-width: 768px) {
+    .profile-content-wrapper {
+        flex-direction: column;
+        align-items: center; /* Center content when stacked */
+        gap: 2.5rem; /* Consistent gap */
+    }
+}
+
+
+/* Left Section: Profile Picture */
+.profile-section-left {
+    flex-shrink: 0; /* Don't let it shrink */
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center contents of the left section */
+    /* Removed fixed width, let content dictate, or set a min-width if needed */
+    /* width: 150px; removed to be more flexible */
+    padding-top: 0.5rem; /* Small adjustment for visual alignment with username field */
+}
+
+/* Right Section: Form Fields */
+.form-section-right {
+    flex-grow: 1; /* Allow it to take remaining space */
+    display: flex;
+    flex-direction: column; /* Stack fields vertically */
+    align-items: flex-start; /* Align labels/inputs to the left */
+    width: 100%; /* Take full width of its flex container */
+    max-width: 550px; /* Constrain max width of the form elements for readability */
+}
+
+/* Profile Picture Specific Styles */
+.profile-picture-wrapper {
+    position: relative;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background-color: #d1d5db;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border: 3px solid var(--primary-color);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+html.dark .profile-pic-wrapper {
+    background-color: #4b5563;
+    border-color: var(--primary-color);
+}
+
+.profile-picture {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.profile-pic-placeholder {
+    font-size: 3rem;
+    color: #6b7280;
+    font-weight: 600;
+}
+
+html.dark .profile-pic-placeholder {
+    color: #9ca3af;
+}
+
+.change-pic-btn {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    background-color: var(--primary-color);
+    color: white;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--off-white-bg);
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s ease;
+}
+
+html.dark .change-pic-btn {
+    border-color: var(--sidebar-bg);
+}
+
+.change-pic-btn:hover {
+    background-color: #3b82f6;
+}
+
+html.dark .change-pic-btn:hover {
+    background-color: #8b5cf6;
+}
+
+.change-pic-label {
+    margin-top: 1rem;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+html.dark .change-pic-label {
+    color: var(--text-secondary);
+}
+
+.change-pic-label:hover {
+    color: var(--primary-color);
+}
+
+.file-input-hidden {
+    display: none;
+}
+
+/* Form Fields (styles for input/textarea and edit icon alignment) */
+.form-field {
+    width: 100%; /* Takes full width of .form-section-right */
+    margin-bottom: 1.5rem;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.form-label {
+    display: block;
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--text-color);
+    margin-bottom: 0.5rem;
+}
+
+.input-with-edit-icon {
+    display: flex;
+    align-items: center;
+    border: 1px solid #d1d5db;
+    border-radius: 0.5rem;
+    background-color: #f9fafb;
+    transition: border-color 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+    width: 100%;
+}
+
+html.dark .input-with-edit-icon {
+    border-color: #4b5563;
+    background-color: #374151;
+}
+
+.input-with-edit-icon:focus-within {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 1px var(--primary-color);
+    outline: none;
+}
+
+.form-input,
+.form-textarea {
+    flex-grow: 1;
+    padding: 0.75rem 1rem;
+    border: none;
+    background-color: transparent;
+    color: var(--text-color);
+    outline: none;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+html.dark .form-input,
+html.dark .form-textarea {
+    color: var(--text-color);
+}
+
+.form-textarea {
+    min-height: 100px;
+    resize: vertical;
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+}
+
+.edit-icon-btn {
+    flex-shrink: 0;
+    padding: 0.75rem 0.75rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text-secondary);
+    transition: color 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.edit-icon-btn:hover {
+    color: var(--primary-color);
+}
+
+html.dark .edit-icon-btn {
+    color: var(--text-secondary);
+}
+
+html.dark .edit-icon-btn:hover {
+    color: var(--primary-color);
+}
+
+
+/* Confirm Edits Button */
+.confirm-edits-btn {
+    width: 100%; /* Take full width of .form-section-right */
+    max-width: 550px; /* Match max-width of form fields */
+    padding: 0.75rem 1.5rem;
+    background-color: var(--primary-color);
+    color: white;
+    font-weight: 600;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+}
+
+.confirm-edits-btn:hover {
+    background-color: #3b82f6;
+}
+
+html.dark .confirm-edits-btn {
+    background-color: var(--primary-color);
+}
+
+html.dark .confirm-edits-btn:hover {
+    background-color: #8b5cf6;
+}
+
+.confirm-edits-btn:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--primary-color), 0 0 0 4px rgba(79, 70, 229, 0.5);
+}
+
+html.dark .confirm-edits-btn:focus {
+    box-shadow: 0 0 0 2px var(--primary-color), 0 0 0 4px rgba(167, 139, 250, 0.5), inset 0 0 0 2px #1f2937;
+}
+
+/* Error message for image upload */
+.image-error-message {
+    color: #ef4444;
+    font-size: 0.875rem;
+    margin-top: 0.5rem;
+    text-align: center;
+}
