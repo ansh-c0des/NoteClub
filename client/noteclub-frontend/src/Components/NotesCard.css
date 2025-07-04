@@ -1,6 +1,13 @@
-/* NotesCard.css */
+/* overlay to blur the background */
+.note-overlay {
+    position: fixed;
+    inset: 0;
+    backdrop-filter: blur(8px);
+    background: rgba(0,0,0,0.4);
+    z-index: 1000;
+}
 
-/* Grid layout (unchanged) */
+/* grid & base card */
 .notes-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -8,8 +15,8 @@
     width: 100%;
 }
 
-/* Card container */
 .note-card {
+    position: relative;
     background-color: var(--off-white-bg);
     color: var(--text-color);
     border-radius: 0.75rem;
@@ -17,27 +24,24 @@
     box-shadow: 0 2px 6px rgba(0,0,0,0.1);
     display: flex;
     flex-direction: column;
-
-    /* add transform & shadow transitions */
     transition:
             background-color 0.3s ease,
             color 0.3s ease,
             transform 0.2s ease,
             box-shadow 0.2s ease;
+    cursor: pointer;
+    z-index: 1;
 }
 
-/* Lift & grow slightly on hover */
 .note-card:hover {
     transform: translateY(-4px) scale(1.02);
     box-shadow: 0 8px 16px rgba(0,0,0,0.2);
 }
 
-/* Quick “press” effect on click */
 .note-card:active {
     transform: translateY(-2px) scale(0.98);
 }
 
-/* Preview area (unchanged) */
 .note-preview {
     width: 100%;
     padding-top: 56.25%;
@@ -45,7 +49,6 @@
     background-position: center;
 }
 
-/* Meta row */
 .note-meta {
     display: flex;
     align-items: center;
@@ -53,37 +56,30 @@
     padding: 0.75rem 1rem;
 }
 
-/* Title */
 .note-title {
     margin: 0;
     font-size: 1.1rem;
     font-weight: 600;
 }
 
-/* Like button */
 .like-btn {
     background: none;
     border: none;
     cursor: pointer;
     color: var(--primary-color);
-
-    /* animate size & color */
     transition:
             transform 0.2s ease,
             color 0.2s ease;
 }
 
-/* Pop on hover */
 .like-btn:hover {
     transform: scale(1.2);
 }
 
-/* “Clicked” shrink */
 .like-btn:active {
     transform: scale(0.9);
 }
 
-/* Description */
 .note-desc {
     margin: 0;
     padding: 0 1rem 1rem;
@@ -91,10 +87,92 @@
     color: var(--text-secondary);
 }
 
-/* Dark mode overrides */
 html.dark .note-card {
     background-color: var(--sidebar-bg);
 }
 html.dark .note-desc {
     color: #d1d5db;
 }
+
+/* ===== expanded state ===== */
+/* === replace your old .note-card.expanded rules === */
+.note-card.expanded {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    /* 2.5:2 height:width → width/height = 2/2.5 = 0.8 */
+    aspect-ratio: 0.8 / 1;
+    width: min(75vw, calc(85vh * 0.8));
+    transform: translate(-50%, -50%);
+    box-shadow: 0 16px 32px rgba(0,0,0,0.3);
+    z-index: 1001;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--off-white-bg);
+}
+
+/* hide small‑card preview, meta & desc when expanded */
+.note-card.expanded .note-preview,
+.note-card.expanded .note-meta,
+.note-card.expanded .note-desc {
+    display: none;
+}
+
+/* expanded layout container */
+.expanded-content {
+    display: flex;
+    flex-direction: column;
+    /* ensure content spans full height so we can pin bottom button */
+    height: 100%;
+    padding: 1.5rem;
+    overflow: hidden;
+    /* start at top */
+    justify-content: flex-start;
+}
+
+/* center the title right at the top */
+.expanded-title {
+    margin: 0;
+    font-size: 1.5rem;
+    text-align: center;
+}
+
+/* fields just under the title */
+.expanded-fields {
+    margin: 0.75rem 0 1rem;
+    text-align: center;
+}
+
+/* description grows in the middle */
+.description-box {
+    /* no longer flex-grow, so it stays compact */
+    flex: auto;
+
+    /* max height so it won’t over‑grow */
+    max-height: 150px;
+    /* give it a dark grey background instead of white */
+    background-color: #1f2a37;
+    padding: 1rem;
+    border: 1px solid var(--text-secondary);
+    border-radius: 0.5rem;
+    color: var(--text-color);
+    overflow-y: auto;
+}
+
+
+/* pin “View Note” to the bottom center */
+.view-btn {
+    margin-top: auto;
+    align-self: center;
+    padding: 0.75rem 1.25rem;
+    font-size: 1rem;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    background-color: var(--primary-color);
+    color: white;
+    transition: transform 0.2s ease, background-color 0.2s ease;
+}
+.view-btn:hover { transform: scale(1.05); background-color: var(--primary-color-light); }
+.view-btn:active { transform: scale(0.95); }
+
