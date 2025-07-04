@@ -26,7 +26,7 @@ function NoteCard({ note }) {
     const subject = 'Mathematics';
     const topic   = 'Calculus I';
     const date    = '2025‑06‑30';
-    const liked_by       = '345 students';
+    const liked_by= '345 students';
 
     return (
         <>

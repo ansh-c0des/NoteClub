@@ -31,6 +31,7 @@
             box-shadow 0.2s ease;
     cursor: pointer;
     z-index: 1;
+    border: solid 1px var(--primary-color);
 }
 
 .note-card:hover {
