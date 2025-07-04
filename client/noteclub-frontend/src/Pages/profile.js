@@ -1,75 +1,94 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import NotesCard from '../Components/NotesCard';
+import './Profile.css';
 
-function Profile() { // Renamed from Register to Profile
-    const navigate = useNavigate();
-    const [username, setUsername] = useState('');
-    const [loading, setLoading] = useState(true); // New state for loading
-    const [error, setError] = useState(null);     // New state for errors
+export default function Profile() {
+    const [username, setUsername] = useState('Ansh Gala');
+    const [bio, setBio] = useState(
+        'Hi there! I’m Ansh, a notes‑sharing enthusiast. Welcome to my profile!'
+    );
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
         const token = localStorage.getItem('jwtToken');
-
         if (!token) {
-            console.log('No token found, redirecting to login');
-            navigate('/');
-            return; // Exit early if no token
+            setError('Not logged in.');
+            setLoading(false);
+            return;
         }
 
-        const extractUsernameFromToken = (token) => {
-            try {
-                const payload = JSON.parse(atob(token.split('.')[1]));
-                return payload.sub || 'User';
-            } catch (error) {
-                console.error('Failed to decode token:', error);
-                return 'User';
-            }
-        };
-
-        // Call a simple protected API to confirm token validity
-        axios.get('http://localhost:8080/api/greet', { // Assuming /api/greet is a protected endpoint
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        })
-            .then(res => {
-                console.log('Token valid:', res.data);
-                setUsername(extractUsernameFromToken(token));
-                setLoading(false); // Data loaded
+        axios
+            .get('http://localhost:8080/api/greet', {
+                headers: { Authorization: `Bearer ${token}` },
             })
-            .catch(err => {
-                console.error('Token invalid or expired:', err);
-                setError('Failed to load profile. Please log in again.'); // Set error message
-                localStorage.removeItem('jwtToken');
-                setLoading(false); // Loading finished, even with error
-                navigate('/'); // Redirect to login on token invalidity
+            .then(() => {
+                const payload = JSON.parse(atob(token.split('.')[1]));
+                setUsername(payload.sub || 'User');
+                setLoading(false);
+            })
+            .catch(() => {
+                setError('Failed to load profile.');
+                setLoading(false);
             });
-    }, [navigate]); // Dependency array includes navigate
+    }, []);
 
     if (loading) {
-        return (
-            <div className="flex justify-center items-center h-full">
-                <p className="text-lg text-gray-600 dark:text-gray-400">Loading profile...</p>
-            </div>
-        );
+        return <div className="profile-container">Loading…</div>;
+    }
+    if (error) {
+        return <div className="profile-container error">{error}</div>;
     }
 
-    if (error) {
-        return (
-            <div className="flex justify-center items-center h-full text-red-500">
-                <p className="text-lg">{error}</p>
-            </div>
-        );
-    }
+    // dummy notes data
+    const notes = [
+        {
+            id: 1,
+            title: 'Calculus I Notes',
+            description: 'Limits, derivatives, integrals, and applications.',
+            previewUrl: 'https://via.placeholder.com/300x150',
+        },
+        {
+            id: 2,
+            title: 'Physics — Chapter 3',
+            description: 'Kinematics and motion in one dimension.',
+            previewUrl: 'https://via.placeholder.com/300x150',
+        },
+        {
+            id: 3,
+            title: 'History of Art',
+            description: 'Renaissance to Modernism overview.',
+            previewUrl: 'https://via.placeholder.com/300x150',
+        },
+        {
+            id: 4,
+            title: 'Data Structures',
+            description: 'Arrays, linked lists, trees, and graphs.',
+            previewUrl: 'https://via.placeholder.com/300x150',
+        },
+        {
+            id: 5,
+            title: 'Organic Chemistry',
+            description: 'Hydrocarbons, functional groups, and reactions.',
+            previewUrl: 'https://via.placeholder.com/300x150',
+        },
+    ];
 
     return (
-        <div className="p-6 bg-white dark:bg-gray-800 rounded-lg shadow-md">
-            <h2 className="text-3xl font-bold mb-4 text-blue-600 dark:text-blue-400">Welcome, {username}!</h2>
-            <p className="text-lg text-gray-700 dark:text-gray-300">This is your secure profile page. You can manage your personal information here.</p>
-            {/* Add more profile-specific content here */}
+        <div className="profile-container">
+            <div className="profile-header">
+                <img
+                    className="profile-pic"
+                    src="https://via.placeholder.com/150"
+                    alt="Profile"
+                />
+                <div className="profile-info">
+                    <h2 className="profile-username">{username}</h2>
+                    <p className="profile-bio">{bio}</p>
+                </div>
+            </div>
+            <NotesCard notes={notes} />
         </div>
     );
 }
-
-export default Profile;

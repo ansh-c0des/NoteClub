@@ -252,17 +252,29 @@ html.dark .register-button:focus {
 
 /* App.css :contentReference[oaicite:0]{index=0} */
 :root {
-    /* ...existing vars... */
-    --off-white-bg:   #eceff4; /* your desired light‑mode background */
-    --sidebar-bg:     var(--off-white-bg);
-    --navbar-bg:      var(--off-white-bg);
-    --main-bg:        var(--off-white-bg);
+    /* Text colors */
+    --text-color:        #1f2937;   /* primary text in light mode */
+    --text-secondary:    #555555;   /* secondary text in light mode */
+
+    /* Accent / primary action color */
+    --primary-color:     #4f46e5;
+
+    /* Backgrounds */
+    --off-white-bg:      #eceff4;   /* your off-white for sidebar/main */
+    --navbar-bg:         #e0e3e8;   /* a bit richer off-white for navbar */
+
+    /* Sidebar & main in light mode (can just alias off-white) */
+    --sidebar-bg:        var(--off-white-bg);
+    --main-bg:           var(--off-white-bg);
 }
 
-/* Dark‑mode override (if you ever need a different off‑white in dark): */
+/* Dark-mode overrides */
 html.dark {
-    --sidebar-bg:     #1f2937; /* already set */
-    --navbar-bg:      #1f2937; /* mirror sidebar */
-    --main-bg:        #111827; /* matches app-container */
+    --text-color:        #f9fafb;
+    --text-secondary:    #d1d5db;
+    --primary-color:     #a78bfa;
+    --sidebar-bg:        #1f2937;
+    --navbar-bg:         #1f2937;
+    --main-bg:           #111827;
 }
 
