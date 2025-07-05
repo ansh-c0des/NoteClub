@@ -8,6 +8,14 @@ import com.noteclub.server.repository.ProfileRepo;
 import com.noteclub.server.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.UUID;
 
 @Service
 public class UserProfileService {
@@ -28,18 +36,44 @@ public class UserProfileService {
         return resp;
     }
 
-    public PostProfileResponseDTO postProfileDetails(String username, PostProfileResponseDTO request) {
+    public PostProfileResponseDTO postProfileDetails(String username, PostProfileResponseDTO request) throws IOException {
         Users user = userRepo.findByUsername(username);
 
-        UserProfile profile = new UserProfile();
+        //1. Save the picture locally
+        MultipartFile file = request.getPic_file();
+        String uploadsDir = System.getProperty("user.dir") + File.separator + "uploads";
+        Files.createDirectories(Paths.get(uploadsDir));
+
+        String original = file.getOriginalFilename();
+        String ext =  "";
+        int dot = original.lastIndexOf('.');
+        if(dot >= 0)
+            ext = original.substring(dot);
+        String uniqueName = UUID.randomUUID() + ext;
+
+        Path target = Paths.get(uploadsDir).resolve(uniqueName);
+        file.transferTo(target.toFile());
+
+        // 2. Update UserProfile entity
+        UserProfile profile = profileRepo.findByUserUsername(username);
+        if (profile == null) {
+            profile = new UserProfile();
+            profile.setUser(user);
+            profile.setUsername(user.getUsername());
+        }
         profile.setUser(user);
-        profile.setPictureUrl(request.getPicture_url());
+        profile.setPictureUrl("/files/" + uniqueName);
         profile.setBio(request.getBio());
         profile.setEdu_course(request.getEdu_course());
         profile.setUsername(userRepo.findByUsername(username).getUsername());
 
         profileRepo.save(profile);
 
-        return request;
+        // 3. Prepare response
+        PostProfileResponseDTO resp = new PostProfileResponseDTO();
+        resp.setPicture_url(profile.getPictureUrl());
+        resp.setBio(profile.getBio());
+        resp.setEdu_course(profile.getEdu_course());
+        return resp;
     }
 }
