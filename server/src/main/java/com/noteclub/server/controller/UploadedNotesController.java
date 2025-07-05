@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -24,7 +25,7 @@ public class UploadedNotesController {
 
     @PostMapping("/uploadNotes")
     public PostNotesDTO postNotes(@AuthenticationPrincipal UserPrincipal principal,
-                                  @RequestBody PostNotesDTO request) {
+                                  @ModelAttribute PostNotesDTO request) throws IOException {// handles both file + fields
         return uploadedNotesService.postNotes(principal.getUsername(), request);
     }
 
