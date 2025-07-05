@@ -1,6 +1,6 @@
 package com.noteclub.server.repository;
 
-import com.noteclub.server.model.Users;
+import com.noteclub.server.model.entity.Users;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

@@ -1,8 +1,8 @@
 package com.noteclub.server.controller;
 
-import com.noteclub.server.model.FetchNotesDTO;
-import com.noteclub.server.model.PostNotesDTO;
-import com.noteclub.server.model.UserPrincipal;
+import com.noteclub.server.model.DTO.FetchNotesDTO;
+import com.noteclub.server.model.DTO.PostNotesDTO;
+import com.noteclub.server.security.UserPrincipal;
 import com.noteclub.server.service.UploadedNotesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

@@ -1,9 +1,9 @@
 package com.noteclub.server.service;
 
-import com.noteclub.server.model.FetchNotesDTO;
-import com.noteclub.server.model.PostNotesDTO;
-import com.noteclub.server.model.UploadedNotes;
-import com.noteclub.server.model.Users;
+import com.noteclub.server.model.DTO.FetchNotesDTO;
+import com.noteclub.server.model.DTO.PostNotesDTO;
+import com.noteclub.server.model.entity.UploadedNotes;
+import com.noteclub.server.model.entity.Users;
 import com.noteclub.server.repository.UploadedNotesRepo;
 import com.noteclub.server.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;

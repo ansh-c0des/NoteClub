@@ -1,7 +1,7 @@
 package com.noteclub.server.service;
 
-import com.noteclub.server.model.UserPrincipal;
-import com.noteclub.server.model.Users;
+import com.noteclub.server.security.UserPrincipal;
+import com.noteclub.server.model.entity.Users;
 import com.noteclub.server.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;

@@ -1,6 +1,6 @@
 package com.noteclub.server.controller;
 
-import com.noteclub.server.model.Users;
+import com.noteclub.server.model.entity.Users;
 import com.noteclub.server.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

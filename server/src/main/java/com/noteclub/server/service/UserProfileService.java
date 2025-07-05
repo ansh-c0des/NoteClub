@@ -1,9 +1,9 @@
 package com.noteclub.server.service;
 
-import com.noteclub.server.model.PostProfileResponseDTO;
-import com.noteclub.server.model.ProfileResponseDTO;
-import com.noteclub.server.model.UserProfile;
-import com.noteclub.server.model.Users;
+import com.noteclub.server.model.DTO.PostProfileResponseDTO;
+import com.noteclub.server.model.DTO.ProfileResponseDTO;
+import com.noteclub.server.model.entity.UserProfile;
+import com.noteclub.server.model.entity.Users;
 import com.noteclub.server.repository.ProfileRepo;
 import com.noteclub.server.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;

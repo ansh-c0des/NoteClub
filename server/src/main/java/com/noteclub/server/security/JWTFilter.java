@@ -1,4 +1,4 @@
-package com.noteclub.server.configuration;
+package com.noteclub.server.security;
 
 import com.noteclub.server.service.JWTService;
 import com.noteclub.server.service.MyUserDetailsService;

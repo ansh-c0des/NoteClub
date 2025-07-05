@@ -1,4 +1,4 @@
-package com.noteclub.server.model;
+package com.noteclub.server.model.DTO;
 
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;

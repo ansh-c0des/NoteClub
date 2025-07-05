@@ -1,4 +1,4 @@
-package com.noteclub.server.model;
+package com.noteclub.server.model.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

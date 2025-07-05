@@ -1,4 +1,4 @@
-package com.noteclub.server.model;
+package com.noteclub.server.model.DTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

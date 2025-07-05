@@ -1,5 +1,6 @@
 package com.noteclub.server.configuration;
 
+import com.noteclub.server.security.JWTFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
