@@ -7,6 +7,7 @@ import com.noteclub.server.model.entity.Users;
 import com.noteclub.server.repository.UploadedNotesRepo;
 import com.noteclub.server.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -72,5 +73,19 @@ public class UploadedNotesService {
         //3. Return DTO (with URL instead of files)
         request.setNote_url(note.getNote_url());
         return request;
+    }
+
+    public FetchNotesDTO getUploadedNoteById(Integer id) throws ChangeSetPersister.NotFoundException {
+        UploadedNotes note = uploadedNotesRepo.findById(id)
+                .orElseThrow(ChangeSetPersister.NotFoundException::new) ;
+        return new FetchNotesDTO(
+                note.getNotes_id(),
+                note.getNote_url(),
+                note.getNote_title(),
+                note.getDescription(),
+                note.getSubject(),
+                note.getTopic(),
+                note.getUploadDate()
+        );
     }
 }
