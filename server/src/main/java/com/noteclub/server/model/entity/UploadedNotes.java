@@ -16,7 +16,7 @@ public class UploadedNotes {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long notes_id;
+    private Integer notes_id;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)

@@ -10,7 +10,7 @@ import java.time.Instant;
 @AllArgsConstructor
 @NoArgsConstructor
 public class FetchNotesDTO {
-    private Long notes_id;
+    private Integer notes_id;
     private String note_url;
     private String note_title;
     private String Description;

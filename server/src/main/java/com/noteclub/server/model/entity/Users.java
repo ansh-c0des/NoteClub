@@ -9,7 +9,8 @@ import lombok.Data;
 public class Users {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer user_id;
+    @Column(name = "user_id")
+    private Integer userId;
     @Column(name = "user_name")
     private String username;
     private String email_id;
@@ -21,7 +22,7 @@ public class Users {
     @Override
     public String toString() {
         return "Users{" +
-                "user_id=" + user_id +
+                "user_id=" + userId +
                 ", user_name='" + username + '\'' +
                 ", email_id='" + email_id + '\'' +
                 ", phone_number='" + phone_number + '\'' +
