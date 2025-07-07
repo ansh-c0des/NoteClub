@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './Upload_notes.css';
+import { uploadNotes } from '../services/api';
 
 function UploadNotes() {
     const [selectedFile, setSelectedFile] = useState(null);
@@ -21,23 +22,36 @@ function UploadNotes() {
     const handleSubmit = (event) => {
         event.preventDefault();
 
-        // Basic validation for demonstration
+        // Basic validation
         if (!subject || !topic || !title || !description || !selectedFile) {
             alert('Please fill in all required fields and select a file.');
-            return; // Stop form submission
+            return;
         }
 
-        console.log("Submitting notes...");
-        console.log("Subject:", subject);
-        console.log("Topic:", topic);
-        console.log("Title:", title);
-        console.log("Description:", description);
-        if (selectedFile) {
-            console.log("File to upload:", selectedFile);
-            // In a real application, you would send this data (including selectedFile) to your backend
-            // The backend would then save the file and store its path in the database.
-        }
-        // else case is already covered by the validation above
+        // Build FormData for multipart upload
+        const formData = new FormData();
+        formData.append('file', selectedFile);
+        formData.append('subject', subject);
+        formData.append('topic', topic);
+        formData.append('title', title);
+        formData.append('description', description);
+
+        // Call the API
+        uploadNotes(formData)
+            .then((resp) => {
+                console.log('Upload successful:', resp);
+                alert('Notes uploaded successfully!');
+                // Clear the form
+                setSubject('');
+                setTopic('');
+                setTitle('');
+                setDescription('');
+                setSelectedFile(null);
+            })
+            .catch((err) => {
+                console.error('Upload failed:', err);
+                alert('Failed to upload notes. Please try again.');
+            });
     };
 
     return (
@@ -50,7 +64,7 @@ function UploadNotes() {
                     {/* Left Column - Subject, Topic, Title */}
                     <div className="form-column">
                         <div className="form-group">
-                            <label htmlFor="subject" className="form-label required">Subject:</label> {/* Added 'required' class */}
+                            <label htmlFor="subject" className="form-label required">Subject:</label>
                             <input
                                 type="text"
                                 id="subject"
@@ -58,11 +72,11 @@ function UploadNotes() {
                                 placeholder="e.g., Mathematics"
                                 value={subject}
                                 onChange={(e) => setSubject(e.target.value)}
-                                required // HTML5 validation attribute
+                                required
                             />
                         </div>
                         <div className="form-group">
-                            <label htmlFor="topic" className="form-label required">Topic:</label> {/* Added 'required' class */}
+                            <label htmlFor="topic" className="form-label required">Topic:</label>
                             <input
                                 type="text"
                                 id="topic"
@@ -70,11 +84,11 @@ function UploadNotes() {
                                 placeholder="e.g., Algebra"
                                 value={topic}
                                 onChange={(e) => setTopic(e.target.value)}
-                                required // HTML5 validation attribute
+                                required
                             />
                         </div>
                         <div className="form-group">
-                            <label htmlFor="title" className="form-label required">Title:</label> {/* Added 'required' class */}
+                            <label htmlFor="title" className="form-label required">Title:</label>
                             <input
                                 type="text"
                                 id="title"
@@ -82,7 +96,7 @@ function UploadNotes() {
                                 placeholder="e.g., Quadratic Equations"
                                 value={title}
                                 onChange={(e) => setTitle(e.target.value)}
-                                required // HTML5 validation attribute
+                                required
                             />
                         </div>
                     </div>
@@ -90,44 +104,42 @@ function UploadNotes() {
                     {/* Right Column - Description */}
                     <div className="form-column">
                         <div className="form-group">
-                            <label htmlFor="description" className="form-label required">Description:</label> {/* Added 'required' class */}
+                            <label htmlFor="description" className="form-label required">Description:</label>
                             <textarea
                                 id="description"
                                 className="form-textarea"
                                 placeholder="Provide a brief description of your notes..."
                                 value={description}
                                 onChange={(e) => setDescription(e.target.value)}
-                                required // HTML5 validation attribute
-                            ></textarea>
+                                required
+                            />
                         </div>
                     </div>
                 </div>
 
-                {/* Browse Notes */}
+                {/* Browse Notes File Input */}
                 <div className="browse-notes-container">
-                    <label htmlFor="browse-notes" className="browse-notes-label required">Browse Notes:</label> {/* Added 'required' class */}
+                    <label htmlFor="browse-notes" className="browse-notes-label required">Browse Notes:</label>
                     <div className="file-input-wrapper">
                         <input
                             type="file"
                             id="browse-notes"
                             className="file-input"
                             onChange={handleFileChange}
-                            required // HTML5 validation attribute
+                            required
                         />
-                        {/* Display selected file name */}
                         {selectedFile && (
-                            <span className="selected-file-name">
-                                {selectedFile.name}
-                            </span>
+                            <span className="selected-file-name">{selectedFile.name}</span>
                         )}
                     </div>
                 </div>
 
-                {/* Post Button */}
+                {/* Upload Button */}
                 <button type="submit" className="post-button">UPLOAD</button>
             </form>
         </div>
     );
+
 }
 
 export default UploadNotes;

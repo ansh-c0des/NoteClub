@@ -22,11 +22,16 @@ function NoteCard({ note }) {
     const open = () => setExpanded(true);
     const close = () => setExpanded(false);
 
-    // dummy data:
-    const subject = 'Mathematics';
-    const topic   = 'Calculus I';
-    const date    = '2025‑06‑30';
-    const liked_by= '345 students';
+    const {
+        title,
+        description,
+        previewUrl,
+        viewUrl,
+        subject,
+        topic,
+        date,
+        liked_by
+    } = note;
 
     return (
         <>
@@ -41,13 +46,13 @@ function NoteCard({ note }) {
             >
                 <div
                     className="note-preview"
-                    style={{ backgroundImage: `url(${note.previewUrl})` }}
+                    style={{ backgroundImage: `url(${previewUrl})` }}
                 />
 
                 {!expanded ? (
                     <>
                         <div className="note-meta">
-                            <h3 className="note-title">{note.title}</h3>
+                            <h3 className="note-title">{title}</h3>
                             <button
                                 className="like-btn"
                                 onClick={(e) => {
@@ -59,23 +64,23 @@ function NoteCard({ note }) {
                                 <Heart fill={liked ? 'currentColor' : 'none'} />
                             </button>
                         </div>
-                        <p className="note-desc">{note.description}</p>
+                        <p className="note-desc">{description}</p>
                     </>
                 ) : (
                     <div className="expanded-content">
-                        <h2 className="expanded-title">{note.title}</h2>
+                        <h2 className="expanded-title">{title}</h2>
                         <div className="expanded-fields">
                             <p><strong>Subject:</strong> {subject}</p>
                             <p><strong>Topic:</strong> {topic}</p>
                             <p><strong>Uploaded:</strong> {date}</p>
-                            <p><strong>Liked by:</strong> {liked_by}</p>
+                            {liked_by && <p><strong>Liked by:</strong> {liked_by}</p>}
                         </div>
                         <div className="description-box">
-                            {note.description}
+                            {description}
                         </div>
                         <button
                             className="view-btn"
-                            onClick={() => window.open(note.viewUrl || '#', '_blank')}
+                            onClick={() => window.open(viewUrl || '#', '_blank')}
                         >
                             View Note
                         </button>
