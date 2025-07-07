@@ -1,35 +1,29 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import NotesCard from '../Components/NotesCard';
 import './Profile.css';
+import { getProfileDetails } from '../services/api';
+
 
 export default function Profile() {
-    const [username, setUsername] = useState('Ansh Gala');
-    const [bio, setBio] = useState(
-        'Hi there! I’m Ansh, a notes‑sharing enthusiast. Welcome to my profile!'
-    );
+    const [username, setUsername] = useState('');
+    const [bio, setBio] = useState('');
+    const [profilePic, setProfilePic] = useState('');
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        const token = localStorage.getItem('jwtToken');
-        if (!token) {
-            setError('Not logged in.');
-            setLoading(false);
-            return;
-        }
-
-        axios
-            .get('http://localhost:8080/api/greet', {
-                headers: { Authorization: `Bearer ${token}` },
+        getProfileDetails()
+            .then(data => {
+                setUsername(data.username);
+                setBio(data.bio);
+                const serverBaseUrl = "http://localhost:8080";
+                setProfilePic(serverBaseUrl + data.picture_url);
             })
-            .then(() => {
-                const payload = JSON.parse(atob(token.split('.')[1]));
-                setUsername(payload.sub || 'User');
-                setLoading(false);
-            })
-            .catch(() => {
+            .catch(err => {
+                console.error('Error fetching profile details:', err);
                 setError('Failed to load profile.');
+            })
+            .finally(() => {
                 setLoading(false);
             });
     }, []);
@@ -80,7 +74,7 @@ export default function Profile() {
             <div className="profile-header">
                 <img
                     className="profile-pic"
-                    src="https://via.placeholder.com/150"
+                    src={profilePic}
                     alt="Profile"
                 />
                 <div className="profile-info">
