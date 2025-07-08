@@ -32,3 +32,12 @@ export function uploadNotes(formData) {
         )
         .then(res => res.data);
 }
+
+export function getLikedNotes() {
+    const token = localStorage.getItem('jwtToken');
+    return axios
+        .get(`${API_BASE}/LikedNotes/FetchLikedNotes`, {
+            headers: { Authorization: `Bearer ${token}` },
+        })
+        .then(res => res.data);
+}
