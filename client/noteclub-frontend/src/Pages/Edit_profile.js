@@ -1,95 +1,125 @@
 // src/Pages/Edit_profile.js
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Edit2 as EditIcon, Camera } from 'lucide-react';
 import './Edit_profile.css';
+import { getProfileDetails, updateProfile } from '../services/api';
 
 function EditProfile() {
+    const navigate = useNavigate();
+
     // State for form fields
-    const [username, setUsername] = useState('Current Username');
-    const [bio, setBio] = useState('Write a short bio about yourself...');
-    const [education, setEducation] = useState('Your Education');
+    const [username,   setUsername]   = useState('');
+    const [bio,        setBio]        = useState('');
+    const [education,  setEducation]  = useState('');
     const [profilePic, setProfilePic] = useState(null);
-    const [profilePicPreview, setProfilePicPreview] = useState('https://placehold.co/120x120/cccccc/000000?text=JP'); // Default placeholder
+    const [preview,    setPreview]    = useState(null);
     const [imageError, setImageError] = useState('');
 
-    // Refs for input fields
-    const usernameInputRef = useRef(null);
-    const bioInputRef = useRef(null);
-    const educationInputRef = useRef(null);
-    const fileInputRef = useRef(null); // Ref for the hidden file input
+    // Refs so we can programmatically focus
+    const usernameRef  = useRef();
+    const bioRef       = useRef();
+    const educationRef = useRef();
+    const fileRef      = useRef();
 
-    // Function to handle profile picture upload
-    const handleProfilePicChange = (event) => {
-        const file = event.target.files[0];
-        setImageError(''); // Clear previous errors
+    // 1) On mount, load the existing profile
+    useEffect(() => {
+        getProfileDetails()
+            .then(data => {
+                setUsername(data.username);
+                setBio(data.bio);
+                setEducation(data.edu_course);
 
-        if (file) {
-            const validImageTypes = ['image/jpeg', 'image/png', 'image/gif'];
-            if (!validImageTypes.includes(file.type)) {
-                setImageError('Invalid file type. Please upload a JPG, PNG, or GIF image.');
-                setProfilePic(null);
-                setProfilePicPreview('https://placehold.co/120x120/cccccc/000000?text=JP');
-                return;
-            }
+                // Build full URL for existing picture
+                const serverBase = process.env.REACT_APP_API_BASE_URL || 'http://localhost:8080';
+                setPreview(serverBase + data.picture_url);
+            })
+            .catch(err => {
+                console.error('Failed to load profile:', err);
+            });
+    }, []);
 
-            const maxSize = 5 * 1024 * 1024; // 5 MB in bytes
-            if (file.size > maxSize) {
-                setImageError('Image size too large. Max 5MB allowed.');
-                setProfilePic(null);
-                setProfilePicPreview('https://placehold.co/120x120/cccccc/000000?text=JP');
-                return;
-            }
+    // 2) Handle new picture selection + preview
+    const handleProfilePicChange = e => {
+        const file = e.target.files[0];
+        setImageError('');
 
-            setProfilePic(file);
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setProfilePicPreview(reader.result);
-            };
-            reader.readAsDataURL(file);
-        } else {
+        if (!file) {
             setProfilePic(null);
-            setProfilePicPreview('https://placehold.co/120x120/cccccc/000000?text=JP');
+            return setPreview(null);
+        }
+        const validTypes = ['image/jpeg','image/png','image/gif'];
+        if (!validTypes.includes(file.type)) {
+            setImageError('Please upload JPG, PNG, or GIF.');
+            return;
+        }
+        if (file.size > 5 * 1024 * 1024) {
+            setImageError('Max image size is 5MB.');
+            return;
+        }
+
+        setProfilePic(file);
+        const reader = new FileReader();
+        reader.onload = () => setPreview(reader.result);
+        reader.readAsDataURL(file);
+    };
+
+    // 3) Submit updated profile
+    const handleConfirmEdits = async e => {
+        e.preventDefault();
+
+        const fd = new FormData();
+        fd.append('username',   username);
+        fd.append('bio',        bio);
+        fd.append('edu_course', education);
+        if (profilePic) fd.append('pic_file', profilePic);
+
+        try {
+            const updated = await updateProfile(fd);
+
+            // 4) Store the new JWT so future calls use your new username
+            if (updated.token) {
+                localStorage.setItem('jwtToken', updated.token);
+            }
+
+            // (Optional) refresh local state with whatever the server returns
+            // setUsername(updated.username || username);
+            // setBio(updated.bio);
+            // setEducation(updated.edu_course);
+            // const serverBase = process.env.REACT_APP_API_BASE_URL || 'http://localhost:8080';
+            // setPreview(serverBase + updated.picture_url);
+
+            // 5) Go back to your profile page under the new username
+            navigate('/profile');
+            return;
+        } catch (err) {
+            console.error('Update failed:', err);
+            alert('Failed to update profile.');
         }
     };
 
+    // Helper to open file chooser
     const triggerFileInput = () => {
-        fileInputRef.current.click();
-    };
-
-    const handleConfirmEdits = (event) => {
-        event.preventDefault();
-        console.log("Confirming edits...");
-        console.log("Username:", username);
-        console.log("Bio:", bio);
-        console.log("Education:", education);
-        if (profilePic) {
-            console.log("New Profile Pic:", profilePic.name, profilePic);
-        } else {
-            console.log("No new profile pic uploaded.");
-        }
-        alert('Profile edits confirmed!');
+        fileRef.current.click();
     };
 
     return (
         <div className="edit-profile-container">
-            {/* Main Title - Now centered globally */}
             <h2 className="edit-profile-title">Edit Your Profile</h2>
-
-            {/* New: Wrapper for the two-column content below the title */}
             <div className="profile-content-wrapper">
-                {/* Left Section: Profile Picture and Change Picture */}
+
+                {/* Left: picture */}
                 <div className="profile-section-left">
                     <div className="profile-picture-wrapper">
-                        {profilePicPreview ? (
-                            <img src={profilePicPreview} alt="Profile" className="profile-picture" />
-                        ) : (
-                            <span className="profile-pic-placeholder">JP</span>
-                        )}
+                        {preview
+                            ? <img src={preview} alt="Profile" className="profile-picture" />
+                            : <span className="profile-pic-placeholder">JP</span>
+                        }
                         <input
                             type="file"
-                            accept="image/jpeg, image/png, image/gif"
+                            accept="image/jpeg,image/png,image/gif"
                             onChange={handleProfilePicChange}
-                            ref={fileInputRef}
+                            ref={fileRef}
                             className="file-input-hidden"
                         />
                         <button
@@ -102,28 +132,28 @@ function EditProfile() {
                         </button>
                     </div>
                     {imageError && <p className="image-error-message">{imageError}</p>}
-                    <span className="change-pic-label" onClick={triggerFileInput}>Change Picture</span>
+                    <span className="change-pic-label" onClick={triggerFileInput}>
+            Change Picture
+          </span>
                 </div>
 
-                {/* Right Section: Form Fields and Confirm Button */}
-                {/* The form itself is now the right column, as per sketch logic */}
+                {/* Right: form */}
                 <form onSubmit={handleConfirmEdits} className="form-section-right">
-                    {/* Username Field */}
+                    {/* Username */}
                     <div className="form-field">
                         <label htmlFor="username" className="form-label">Username:</label>
                         <div className="input-with-edit-icon">
                             <input
-                                type="text"
                                 id="username"
                                 className="form-input"
                                 value={username}
-                                onChange={(e) => setUsername(e.target.value)}
-                                ref={usernameInputRef}
+                                onChange={e => setUsername(e.target.value)}
+                                ref={usernameRef}
                             />
                             <button
                                 type="button"
                                 className="edit-icon-btn"
-                                onClick={() => usernameInputRef.current.focus()}
+                                onClick={() => usernameRef.current.focus()}
                                 aria-label="Edit username"
                             >
                                 <EditIcon size={18} />
@@ -131,21 +161,21 @@ function EditProfile() {
                         </div>
                     </div>
 
-                    {/* Bio Field */}
+                    {/* Bio */}
                     <div className="form-field">
                         <label htmlFor="bio" className="form-label">Bio:</label>
                         <div className="input-with-edit-icon">
-                            <textarea
-                                id="bio"
-                                className="form-textarea"
-                                value={bio}
-                                onChange={(e) => setBio(e.target.value)}
-                                ref={bioInputRef}
-                            ></textarea>
+              <textarea
+                  id="bio"
+                  className="form-textarea"
+                  value={bio}
+                  onChange={e => setBio(e.target.value)}
+                  ref={bioRef}
+              />
                             <button
                                 type="button"
                                 className="edit-icon-btn"
-                                onClick={() => bioInputRef.current.focus()}
+                                onClick={() => bioRef.current.focus()}
                                 aria-label="Edit bio"
                             >
                                 <EditIcon size={18} />
@@ -153,22 +183,21 @@ function EditProfile() {
                         </div>
                     </div>
 
-                    {/* Education Field */}
+                    {/* Education */}
                     <div className="form-field">
                         <label htmlFor="education" className="form-label">Your Education:</label>
                         <div className="input-with-edit-icon">
                             <input
-                                type="text"
                                 id="education"
                                 className="form-input"
                                 value={education}
-                                onChange={(e) => setEducation(e.target.value)}
-                                ref={educationInputRef}
+                                onChange={e => setEducation(e.target.value)}
+                                ref={educationRef}
                             />
                             <button
                                 type="button"
                                 className="edit-icon-btn"
-                                onClick={() => educationInputRef.current.focus()}
+                                onClick={() => educationRef.current.focus()}
                                 aria-label="Edit education"
                             >
                                 <EditIcon size={18} />
@@ -176,8 +205,9 @@ function EditProfile() {
                         </div>
                     </div>
 
-                    {/* Confirm Edits Button */}
-                    <button type="submit" className="confirm-edits-btn">Confirm Edits</button>
+                    <button type="submit" className="confirm-edits-btn">
+                        Confirm Edits
+                    </button>
                 </form>
             </div>
         </div>
