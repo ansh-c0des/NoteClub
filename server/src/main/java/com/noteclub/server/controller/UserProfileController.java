@@ -1,6 +1,6 @@
 package com.noteclub.server.controller;
 
-import com.noteclub.server.model.DTO.PostProfileResponseDTO;
+import com.noteclub.server.model.DTO.ProfileRequestDTO;
 import com.noteclub.server.model.DTO.ProfileResponseDTO;
 import com.noteclub.server.security.UserPrincipal;
 import com.noteclub.server.service.UserProfileService;
@@ -23,10 +23,10 @@ public class UserProfileController {
         return userProfileService.getProfileDetails(principal.getUsername());
     }
 
-    @PostMapping(path = "/PostUserDetails",
+    @PutMapping(path = "/PostUserDetails",
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public PostProfileResponseDTO postUserDetails(@AuthenticationPrincipal UserPrincipal principal,
-                                                  @ModelAttribute PostProfileResponseDTO request) throws IOException {
+    public ProfileRequestDTO postProfileDetails(@AuthenticationPrincipal UserPrincipal principal,
+                                                @ModelAttribute ProfileRequestDTO request) throws IOException {
         return userProfileService.postProfileDetails(principal.getUsername(), request);
     }
 }
