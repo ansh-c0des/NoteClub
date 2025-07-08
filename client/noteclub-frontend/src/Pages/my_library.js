@@ -1,53 +1,48 @@
-import React from 'react';
+// src/pages/MyLibrary.js
+import React, { useEffect, useState } from 'react';
 import NotesCard from '../Components/NotesCard';
 import './My_Library.css';
+import { getLikedNotes } from '../services/api';
 
 export default function MyLibrary() {
-    // dummy notes data
-    const notes = [
-        {
-            id: 1,
-            title: 'Calculus I Notes',
-            description: 'Limits, derivatives, integrals, and applications.',
-            previewUrl: 'https://via.placeholder.com/300x150',
-            viewUrl: '#'
-        },
-        {
-            id: 2,
-            title: 'Physics — Chapter 3',
-            description: 'Kinematics and motion in one dimension.',
-            previewUrl: 'https://via.placeholder.com/300x150',
-            viewUrl: '#'
-        },
-        {
-            id: 3,
-            title: 'History of Art',
-            description: 'Renaissance to Modernism overview.',
-            previewUrl: 'https://via.placeholder.com/300x150',
-            viewUrl: '#'
-        },
-        {
-            id: 4,
-            title: 'Data Structures',
-            description: 'Arrays, linked lists, trees, and graphs.',
-            previewUrl: 'https://via.placeholder.com/300x150',
-            viewUrl: '#'
-        },
-        {
-            id: 5,
-            title: 'Organic Chemistry',
-            description: 'Hydrocarbons, functional groups, and reactions.',
-            previewUrl: 'https://via.placeholder.com/300x150',
-            viewUrl: '#'
-        },
-    ];
+    const [notes, setNotes]     = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError]     = useState(null);
+
+    useEffect(() => {
+        const serverBase = 'http://localhost:8080';
+
+        getLikedNotes()
+            .then(data => {
+                // data is our array of liked‐notes DTOs
+                const mapped = data.map(n => ({
+                    id:          n.notes_id,
+                    title:       n.note_title,
+                    description: n.description,
+                    previewUrl:  serverBase + n.note_url,
+                    viewUrl:     serverBase + n.note_url,
+                    subject:     n.subject,
+                    topic:       n.topic,
+                    date:        n.uploadDate.split('T')[0], // YYYY‑MM‑DD
+                }));
+                setNotes(mapped);
+            })
+            .catch(err => {
+                console.error('Error fetching liked notes:', err);
+                setError('Failed to load your library.');
+            })
+            .finally(() => setLoading(false));
+    }, []);
+
+    if (loading) return <div className="my-library">Loading…</div>;
+    if (error)   return <div className="my-library error">{error}</div>;
 
     return (
         <div className="my-library">
             <div className="my-library__header">
                 <h2 className="my-library__title">My Library</h2>
                 <p className="my-library__subtitle">
-                    Collection of all the Notes you saved
+                    Collection of all the notes you saved
                 </p>
             </div>
 
