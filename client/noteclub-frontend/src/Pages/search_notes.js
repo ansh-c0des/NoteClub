@@ -1,66 +1,79 @@
-// src/Pages/Search_notes.jsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Search as SearchIcon } from 'lucide-react';
-import NotesCard from '../Components/NotesCard';  // ← note the plural import
+import NotesCard from '../Components/NotesCard';
 import './Search_notes.css';
+import { searchNotes,getRecommendedNotes } from '../services/api';
 
-function SearchNotes() {
+export default function SearchNotes() {
     const [searchTerm, setSearchTerm] = useState('');
+    const [notes, setNotes] = useState([]);
+    const [searched, setSearched] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
 
-    // Dummy data for recommended notes
-    const dummyNotes = [
-        {
-            id: '1',
-            title: 'Introduction to Calculus',
-            description:
-                'A comprehensive guide to basic calculus concepts, limits, derivatives, and integrals.',
-            previewUrl: 'https://via.placeholder.com/300x200?text=Calc+Preview+1',
-            viewUrl: '#',
-        },
-        {
-            id: '2',
-            title: 'Linear Algebra Fundamentals',
-            description: 'Understanding vectors, matrices, and linear transformations.',
-            previewUrl: 'https://via.placeholder.com/300x200?text=Linear+Algebra',
-            viewUrl: '#',
-        },
-        {
-            id: '3',
-            title: 'Physics: Mechanics I',
-            description: "Notes on classical mechanics, Newton's laws, and kinematics.",
-            previewUrl: 'https://via.placeholder.com/300x200?text=Physics+Notes',
-            viewUrl: '#',
-        },
-        {
-            id: '4',
-            title: 'Organic Chemistry Basics',
-            description:
-                'An overview of organic compounds, functional groups, and basic reactions.',
-            previewUrl: 'https://via.placeholder.com/300x200?text=Organic+Chem',
-            viewUrl: '#',
-        },
-        {
-            id: '5',
-            title: 'Web Development: React Hooks',
-            description:
-                'Practical examples and explanations of common React Hooks for state management and side effects.',
-            previewUrl: 'https://via.placeholder.com/300x200?text=React+Hooks',
-            viewUrl: '#',
-        },
-        {
-            id: '6',
-            title: 'Data Structures & Algorithms',
-            description:
-                'Essential data structures (arrays, lists, trees) and algorithm design techniques.',
-            previewUrl: 'https://via.placeholder.com/300x200?text=DSA+Notes',
-            viewUrl: '#',
-        },
-    ];
+    // New state for recommendations
+    const [recommended, setRecommended] = useState([]);
+    const [recLoading, setRecLoading] = useState(true);
+    const [recError, setRecError] = useState('');
 
-    const handleSearch = (event) => {
-        event.preventDefault();
-        console.log('Searching for:', searchTerm);
-        // TODO: plug in real API call / state update
+    // fetch recommended notes
+    useEffect(() => {
+        setRecLoading(true);
+        getRecommendedNotes(0, 10)
+            .then(res => {
+                const serverBase = process.env.REACT_APP_API_BASE_URL || 'http://localhost:8080';
+                const mapped = res.content.map(n => ({
+                    id:         n.notes_id,
+                    title:      n.note_title,
+                    description:n.description,
+                    previewUrl: serverBase + n.note_url,
+                    viewUrl:    serverBase + n.note_url,
+                    subject:    n.subject,
+                    topic:      n.topic,
+                    date:       new Date(n.uploadDate).toLocaleDateString(),
+                    uploadedBy: n.username
+                }));
+                setRecommended(mapped);
+            })
+            .catch(err => {
+                console.error('Failed to load recommendations:', err);
+                setRecError('Could not load recommendations.');
+            })
+            .finally(() => setRecLoading(false));
+    }, []);
+
+    const handleSearch = async e => {
+        e.preventDefault();
+        if (!searchTerm.trim()) {
+            setErrorMessage('Please enter a search query');
+            return;
+        }
+        setErrorMessage('');
+        setLoading(true);
+        setSearched(false);
+
+        try {
+            const res = await searchNotes(searchTerm, 0, 10);
+            const serverBase = process.env.REACT_APP_API_BASE_URL || 'http://localhost:8080';
+            const mapped = res.content.map(n => ({
+                id:         n.notes_id,
+                title:      n.note_title,
+                description:n.description,
+                previewUrl: serverBase + n.note_url,
+                viewUrl:    serverBase + n.note_url,
+                subject:    n.subject,
+                topic:      n.topic,
+                date:       new Date(n.uploadDate).toLocaleDateString(),
+                uploadedBy: n.username
+            }));
+            setNotes(mapped);
+        } catch (err) {
+            console.error('Search failed:', err);
+            setNotes([]);
+        } finally {
+            setLoading(false);
+            setSearched(true);
+        }
     };
 
     return (
@@ -76,22 +89,43 @@ function SearchNotes() {
                     className="search-input"
                     placeholder="Search Bar"
                     value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
+                    onChange={e => setSearchTerm(e.target.value)}
                 />
                 <button type="submit" className="search-button" aria-label="Search">
                     <SearchIcon size={20} />
                 </button>
             </form>
 
+            {errorMessage && (
+                <div className="search-error-popup">
+                    {errorMessage}
+                </div>
+            )}
+
+            {loading && <p>Loading…</p>}
+            {!loading && searched && notes.length === 0 && (
+                <p className="no-results">No search results</p>
+            )}
+            {!loading && searched && notes.length > 0 && (
+                <>
+                    <h3 className="search-results-heading">Search results:</h3>
+                    <NotesCard notes={notes} />
+                </>
+            )}
+
             <div className="recommendations-section">
                 <h3 className="recommendations-title">
                     Notes Recommended for you
                 </h3>
-                {/* Pass the entire array into NotesCard */}
-                <NotesCard notes={dummyNotes} />
+                {recLoading && <p>Loading recommendations…</p>}
+                {recError && <p className="search-error-popup">{recError}</p>}
+                {!recLoading && !recError && recommended.length === 0 && (
+                    <p className="no-results">No recommendations found</p>
+                )}
+                {!recLoading && recommended.length > 0 && (
+                    <NotesCard notes={recommended} />
+                )}
             </div>
         </div>
     );
 }
-
-export default SearchNotes;

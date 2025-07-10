@@ -1,6 +1,27 @@
 import axios from 'axios';
 const API_BASE = process.env.REACT_APP_API_BASE_URL || 'http://localhost:8080';
 
+export async function loginUser({ username, password }) {
+    const response = await axios.post(
+        `${API_BASE}/api/login`,
+        { username, password },
+        {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        }
+    );
+    return response.data;
+}
+
+export function registerUser(newUser) {
+    return axios.post(
+        `${API_BASE}/api/register`,
+        newUser,
+        { headers: { 'Content-Type': 'application/json' } }
+    ).then(res => res.data);
+}
+
 export function getProfileDetails() {
     const token = localStorage.getItem('jwtToken');
     return axios.get(`${API_BASE}/api/profile/details`, {
@@ -76,4 +97,25 @@ export function deleteLike(noteId) {
             params: { note_id: noteId },
         }
     );
+}
+
+export function searchNotes(query, page = 0, size = 10) {
+    const token = localStorage.getItem('jwtToken');
+    return axios.get(
+        `${API_BASE}/api/notes/searchNotes`,
+        {
+            headers: { Authorization: `Bearer ${token}` },
+            params: { query, page, size },
+        }
+    ).then(res => res.data);
+}
+
+export function getRecommendedNotes(page = 0, size = 10) {
+    const token = localStorage.getItem('jwtToken');
+    return axios
+        .get(`${API_BASE}/api/notes/recommendedNotes`, {
+            headers: { Authorization: `Bearer ${token}` },
+            params: { page, size },
+        })
+        .then(res => res.data);
 }
