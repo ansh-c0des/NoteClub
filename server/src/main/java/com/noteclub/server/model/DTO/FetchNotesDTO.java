@@ -17,6 +17,8 @@ public class FetchNotesDTO {
     private String subject;
     private String topic;
     private Instant uploadDate;
+    private String username;
+
 }
 
 
