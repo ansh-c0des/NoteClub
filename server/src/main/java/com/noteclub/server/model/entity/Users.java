@@ -16,7 +16,8 @@ public class Users {
     private String email_id;
     private String phone_number;
     private String dob;
-    private String edu_course;
+    @Column(name="edu_course")
+    private String eduCourse;
     private String password;
 
     @Override
@@ -27,7 +28,7 @@ public class Users {
                 ", email_id='" + email_id + '\'' +
                 ", phone_number='" + phone_number + '\'' +
                 ", dob='" + dob + '\'' +
-                ", edu_course='" + edu_course + '\'' +
+                ", edu_course='" + eduCourse + '\'' +
                 ", password='" + password + '\'' +
                 '}';
     }
