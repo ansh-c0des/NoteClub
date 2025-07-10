@@ -34,7 +34,8 @@ export default function Profile() {
                     viewUrl:    serverBase + n.note_url,
                     subject:    n.subject,
                     topic:      n.topic,
-                    date:       n.uploadDate.split('T')[0], // YYYY‑MM‑DD
+                    date:       n.uploadDate.split('T')[0],
+                    uploadedBy: n.username
                 }));
                 setNotes(mapped);
             });

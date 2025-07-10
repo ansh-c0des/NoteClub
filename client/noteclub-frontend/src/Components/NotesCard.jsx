@@ -111,6 +111,8 @@ function NoteCard({ note, liked: initialLiked, onLikeToggle }) {
                             <p><strong>Subject:</strong> {note.subject}</p>
                             <p><strong>Topic:</strong> {note.topic}</p>
                             <p><strong>Uploaded:</strong> {note.date}</p>
+                            <p><strong>Uploaded by:</strong> @{note.uploadedBy}</p>
+
                         </div>
                         <div className="description-box">{note.description}</div>
                         <button
